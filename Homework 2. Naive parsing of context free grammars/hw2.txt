@@ -1,0 +1,57 @@
+1.Program Overview
+
+Overall, the parse_prefix function is basically making a matcher that keeps 
+trying different prefix, suffix pair and through it to the acceptor. The 
+function takes a gram which is a function that accepts a symbol and returns the 
+symbols that match it, an acceptor that determines whether a rule is 
+acceptable, and a fragment which is the expression that the matcher and 
+acceptor need to go over.
+
+Since there are two different categories of symbols, terminal and nonterminal, 
+and since the function's behavior largely depend on what category a symbol is in
+(ie.if is a none terminal, we need to go deeper into it, otherwise, we don't 
+need to ), I created two matcher functions that work together to solve the 
+problem.
+
+the nt_mather, as its name suggested, is the matcher that deal with 
+nonterminals. The nt_matcher takes a start symbol, an overall grammar rule, 
+rules that it needs to deal with now, an provided acceptor, a derivation and a 
+fragment. If the rules that it is dealing with is empty, simplely return None,
+otherwise, the nt_matcher break the rules down to head and tail and let the 
+t_matcher check the rule with verything else. If the t_matcher can't match and
+returns None, then skip this rule and try the next one, otherwise, return the 
+resulting Some.
+
+the t_matcher, as its name suggested, mostly deal with terminal symbols. 
+although it will encounter nonterminals, it we simplely pass it to the 
+nt_matcher. The t_matcher takes a full grammar rules, rules it need to deal 
+with, a acceptor, a derivation, and a fragment. If the rule is empty, just 
+return whatever acceptor returns, otherwise check if the symbol is nonterminal. 
+If is nonterminal, t_matcher set the symbol as a start point and let nt_matcher 
+deal with it. Note here, the acceptor is a updated using the rest of the rules 
+in the rules that its dealing with. This is basically moving from dealing first 
+of the rule to match the rest of it.
+
+2.Problem Encountered
+
+the first problem, probably the most important problem that I encounter is 
+understanding the spec of this project. I spend three hours reading the spec to 
+figure out what each function is doing and what type of element are their 
+output and input
+
+the second problem I meet is understanding the concept of returning a function. 
+The concept became much clear after professor eggert talked about it in 
+01/25/2018 lecture. I spend a long time trying to figure out how to develop the 
+program that takes returns a function in an imperative programming way, but it 
+turns out very straight forward using currying
+
+the third problem that I encounter is the need to update the acceptor through 
+t_matcher. The first soluntion that come into my mind is writing another 
+function to update the acceptor, which didn't work out in the end. After 
+re-examining the problems, I figured out that I can accomplish it by the 
+t_matcher
+
+the final problem that I encounter is all different kinds to type matching. 
+When I finished the first version of the program, there are soo many type 
+mathcing errors. I had to go into the function calls to determine which type is 
+approperate for the functions
