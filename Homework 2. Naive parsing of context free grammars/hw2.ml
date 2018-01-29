@@ -10,7 +10,7 @@ let rec nt_matcher start_sym gram_rules rules acceptor deriv frag = match rules 
 						None -> nt_matcher start_sym gram_rules tail acceptor deriv frag
 						| _ -> suc_match
 
-and t_matcher gram_rules rules acceptor deriv frag = match rules with
+and t_matcher gram_rules rule acceptor deriv frag = match rule with
 	[] -> acceptor deriv frag
 	| (N sym)::other_rules -> nt_matcher sym gram_rules (gram_rules sym) (t_matcher gram_rules other_rules acceptor) deriv frag
 	| (T sym)::other_rules -> match frag with
