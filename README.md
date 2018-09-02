@@ -1,5 +1,5 @@
-# Computer Science 131
-### Programming Languages at UCLA
+# Programming Languages
+### Computer Science 131 at UCLA
 
 ##### Term - winter 2018
 ##### Professor - Paul Eggert
