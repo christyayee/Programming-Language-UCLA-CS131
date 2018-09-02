@@ -1,0 +1,62 @@
+Fall 2017
+1.
+(b)
+(('a->'a)->bool)->'aList->'aList->'aList
+
+(c)
+a function that take two list and interleave their elements, if the first list is longer, its elements will start from second, otherwise it will start first
+'aList->'aList->'aList
+
+(d)
+No, it is not tail recursive since it needs to remember the value return and append value to the value return. I would need another list to remember to put all the elements and return the list as the base case
+
+2.!!
+let f f = f 1 1
+let g g = g 0.0 g
+let h h = h f "x"
+For each identifier declared in this code, give the identifier’s scope
+and type.  Or, if there is a scope or type error, briefly explain
+the error.
+
+f1 universal (int->int->'a)->'a
+f2 in f1 int->int->'a
+g problem since if you think, it will cause infinite recursion
+h1 universal (((int->int->'a)->'a)->string->'b)->'b
+h2 in h1 ((int->int->'a)->'a)->string->'b
+
+extra
+let rec f f -> f ...
+shadow the first f (covers the first f and assume the f in the function is f)
+
+3.
+(a)
+Yes
+example
+class A{...}
+class B extends A {...}
+class C extends B {...}
+A c = new C();
+
+(b)!!!
+No, because interface
+
+4.
+(a)
+no need to repeat right hand side
+(b)
+int int = ;
+(c)!
+left associative to right associative, won't have problem, the only thing that make it problem is only ambihuity. A grammar doesn't have a inheritance correctness, unless you compare it to a established grammar.
+(d)!
+ambiguity, !!
+(e)
+declarator and direct-declarator mutual inclusive so can't draw this two in one diagram.
+the diagram of A can't include A
+
+5.
+garbage collector is still needed because owe are still allocating and collecting things on the heap so is still relavent, however we don't need to worry too much about the concrrucy
+
+6.
+???
+
+

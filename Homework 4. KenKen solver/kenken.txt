@@ -1,0 +1,145 @@
+|=======================|
+|Performance Measurement|
+|=======================|
+Considering the extremely long time of plain_kenken on cases that are greater than 5*5, I test the performance on 4*4 and 5*5 cases.
+I use statistics/2 to get the statistics of the performance test
+specifically, test command shown below:
+statistics(runtime,[Start|_]),
+kenken_testname(N,C), plain_kenken(N,C,T),
+statistics(runtime,[Stop|_]),
+Runtime is Stop - Start.
+
+statistics(runtime,[Start|_]),
+kenken_testname(N,C), kenken(N,C,T),
+statistics(runtime,[Stop|_]),
+Runtime is Stop - Start.
+
+=========
+5*5 case
+=========
+for a 5*5 without constraints, plain_kenken runs for 461720ms which is 7.6953 minutes
+statistics(runtime,[Start|_]),
+kenken_test5(N,C), plain_kenken(N,C,T),
+statistics(runtime,[Stop|_]),
+Runtime is Stop - Start.
+C = []
+N = 5
+Runtime = 461720
+Start = 10008
+Stop = 471728
+T = [[5,4,3,2,1],[4,5,2,1,3],[3,2,1,5,4],[2,1,4,3,5],[1,3,5,4,2]] ?
+
+for kenken, the 5*5 test case without constraints runs less than 1 ms so the result I get is Runtime = 0
+statistics(runtime,[Start|_]),
+kenken_test2(N,C), kenken(N,C,T),
+statistics(runtime,[Stop|_]),
+Runtime is Stop - Start.
+C = [6+[[1|1],[1|2],[2|1]],-(1,[3|1],[3|2]),-(1,[4|1],[4|2]),8+[[3|3],[4|3],[4|4]],2*[[3|4]]]
+N = 5
+Runtime = 0
+Start = 939296
+Stop = 939296
+T = [[1,2,3,4,5],[3,1,4,5,2],[4,3,5,2,1],[5,4,2,1,3],[2,5,1,3,4]]
+
+for kenken, the 5*5 test case without constraints runs less than 1 ms so the result I get is Runtime = 0
+statistics(runtime,[Start|_]),
+kenken_test5(N,C), kenken(N,C,T),
+statistics(runtime,[Stop|_]),
+Runtime is Stop - Start.
+C = []
+N = 5
+Runtime = 0
+Start = 5
+Stop = 5
+T = [[1,2,3,4,5],[2,1,4,5,3],[3,4,5,1,2],[4,5,2,3,1],[5,3,1,2,4]] ?
+
+=========
+4*4 case
+=========
+for plain kenken, the 4*4 test case runs about 1000 ms
+statistics(runtime,[Start|_]),
+kenken_test4(N,C), plain_kenken(N,C,T),
+statistics(runtime,[Stop|_]),
+Runtime is Stop - Start.
+C = [6+[[1|1],[1|2],[2|1]],96*[[1|3],[1|4],[2|2],[2|3],[2|4]],-(1,[3|1],[3|2]),-(1,[4|1],[4|2]),8+[[3|3],[4|3],[4|4]],2*[[3|4]]]
+N = 4
+Runtime = 1054
+Start = 14528
+Stop = 15582
+T = [[1,2,3,4],[3,4,2,1],[4,3,1,2],[2,1,4,3]] 
+
+for plain kenken, a 4*4 without constraints case runs for 35ms
+statistics(runtime,[Start|_]),
+kenken_test4(N,C), plain_kenken(N,C,T),
+statistics(runtime,[Stop|_]),
+Runtime is Stop - Start.
+C = []
+N = 4
+Runtime = 35
+Start = 8697
+Stop = 8732
+T = [[4,3,2,1],[3,4,1,2],[2,1,4,3],[1,2,3,4]]
+
+for kenken, the 4*4 test case runs about 1ms
+statistics(runtime,[Start|_]),
+kenken_test2(N,C), kenken(N,C,T),
+statistics(runtime,[Stop|_]),
+Runtime is Stop - Start.
+C = [6+[[1|1],[1|2],[2|1]],96*[[1|3],[1|4],[2|2],[2|3],[2|4]],-(1,[3|1],[3|2]),-(1,[4|1],[4|2]),8+[[3|3],[4|3],[4|4]],2*[[3|4]]]
+N = 4
+Runtime = 1
+Start = 15584
+Stop = 15585
+T = [[1,2,3,4],[3,4,2,1],[4,3,1,2],[2,1,4,3]] 
+
+for kenken, the 4*4 test case without constraints runs less than 1 ms so the result I get is Runtime = 0
+statistics(runtime,[Start|_]),
+kenken_test4(N,C), kenken(N,C,T),
+statistics(runtime,[Stop|_]),
+Runtime is Stop - Start.
+C = []
+N = 4
+Runtime = 0
+Start = 8733
+Stop = 8733
+T = [[1,2,3,4],[2,1,4,3],[3,4,1,2],[4,3,2,1]]
+
+==========
+conclusion
+==========
+as we can see, kenken have a far better performance than plain_kenken on the test cases
+
+|===================|
+|no-op KenKen Design|
+|===================|
+
+noop_kenken/4 
+takes in 
+N -- puzzle size, this should be in the same for as the N for normal kenken
+C -- contraints, this should be similar to the constraints for normal kenken except it doesn't have operations
+O -- operation list, this is the operation list that the solver get
+T -- the solution to puzzle, this should be in the same form as the T for normal kenken
+The difference between no-op kenken and current kenken is that no-op kenken need to solve for operations too. 
+
+input cases and expected output
+noop_kenken(
+	4, 
+	[
+	(2, [1|1, 2|1]),
+	(3, [1|2, 1|3]),
+	(7, [1|4, 2|4, 3|4]),
+	(1, [2|2, 3|2]),
+	(7, [2|3, 3|3]),
+	(6, [3|1, 4|1]),
+	(3, [4|2, 4|3]),
+	(3, [4|4])
+	],
+	O, T).
+should produce
+O = [-,+,+,-,+,+,-,+]
+T = [
+	[3,1,2,4],
+	[1,3,4,2],
+	[4,2,3,1],
+	[2,4,1,3]
+]
